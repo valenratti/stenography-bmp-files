@@ -73,7 +73,7 @@ int decrypt(char *algorithm, char *mode, char *pass, unsigned char *in, unsigned
     if(!EVP_DecryptFinal_ex(&ctx, plain_text + plain_len, &final_len))
         return;-1;
 
-    *out_len += final_len;
+    *out_len += final_len;  // FIXME: why +=?
 
     memcpy(out, plain_text, *out_len)
 
@@ -97,7 +97,6 @@ EVP_CIPHER * get_cipher(char *algorithm, char *mode) {
                 default:    // cbc
                     return EVP_aes_192_cbc();
             }
-            break;
         case "aes256":
             switch(mode) {
                 case "ecb":
@@ -109,7 +108,6 @@ EVP_CIPHER * get_cipher(char *algorithm, char *mode) {
                 default:    // cbc
                     return EVP_aes_256_cbc();
             }
-            break;
         case "des":
             switch(mode) {
                 case "ecb":
@@ -121,7 +119,6 @@ EVP_CIPHER * get_cipher(char *algorithm, char *mode) {
                 default:    // cbc
                     return EVP_des_cbc();
             }
-            break;
         default:    // aes128
             switch(mode) {
                 case "ecb":
