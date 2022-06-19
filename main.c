@@ -1,15 +1,15 @@
 #include <stdlib.h>
 
-#include "input_options.h"
+#include "include/args.h"
 
-int main() {
-    // TODO: Parse arguments
+int main(int argc , char *argv[]) {
 
-    struct input_options *opt = malloc(struct *input_options);
+    parse_args(argc, argv);
+    struct args *args = get_args();
 
-    opt->a = "aes128";
-    opt->m = "cbc";
-    opt->pass = "lautaro";
+    args->a = "aes128";
+    args->m = "cbc";
+    args->pass = "lautaro";
 
     // encrypt
     // print

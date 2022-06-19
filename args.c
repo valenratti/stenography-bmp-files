@@ -5,7 +5,7 @@
 #include <errno.h>
 #include <getopt.h>
 
-#include "args.h"
+#include "include/args.h"
 
 struct args args; /* struct con la configuracion */
 

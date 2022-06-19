@@ -1,4 +1,4 @@
-#include "input_options.h"
+#include "args.h"
 
 /**
  * @brief 
@@ -7,4 +7,4 @@
  * and writes a new image in the provided destination file.
  * @param options 
  */
-void runStenography(struct input_options options);
+void run_stenography(struct arg options);

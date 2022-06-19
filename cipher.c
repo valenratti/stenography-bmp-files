@@ -1,7 +1,7 @@
 #include <string.h>
 #include <openssl/evp.h>
 
-#include "cipher.h"
+#include "include/cipher.h"
 
 
 EVP_CIPHER * get_cipher(char *algorithm, char *mode);
