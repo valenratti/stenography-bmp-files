@@ -12,4 +12,4 @@ clean:
 	rm -f /*.o $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -lpthread -o stegano
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -lssl -lcrypto -o stegano
