@@ -1,8 +1,8 @@
 #include <string.h>
 #include <openssl/evp.h>
-#include <openssl/aes.h>
-#include <openssl/des.h>
-#include <openssl/err.h>
+// #include <openssl/aes.h>
+// #include <openssl/des.h>
+// #include <openssl/err.h>
 
 #include "include/cipher.h"
 
@@ -34,17 +34,18 @@ int encrypt(char *algorithm, char *mode, char *pass, unsigned char *in, unsigned
     EVP_CIPHER_CTX_init(ctx);
     EVP_EncryptInit_ex(ctx, cipher, NULL, key, iv);
 
-    if(!EVP_EncryptUpdate(ctx, cipher_text, &cipher_len, in, in_len))
+    /* Encripta todos los bloques completos que pueda */
+    if(!EVP_EncryptUpdate(ctx, cipher_text, (int *) out_len, in, in_len))
         return -1;
-    // TODO: chequear de aca para abajo
-    if(!EVP_EncryptFinal_ex(ctx, cipher_text + cipher_len, &final_len))
+
+    /* Encripta el ultimo bloque + padding */
+    if(!EVP_EncryptFinal_ex(ctx, cipher_text + *out_len, &final_len))
         return -1;
 
     *out_len += final_len;
 
     memcpy(out, cipher_text, *out_len);
 
-    EVP_CIPHER_CTX_cleanup(ctx); // FIXME: cleanup y free?
     EVP_CIPHER_CTX_free(ctx);
 
     return 0;
@@ -68,24 +69,28 @@ int decrypt(char *algorithm, char *mode, char *pass, unsigned char *in, unsigned
 
     int final_len;
     int plain_len = in_len + EVP_MAX_BLOCK_LENGTH;     // EVP_MAX_BLOCK_LENGTH = 32
-    unsigned char plain_text[plain_len];
+    unsigned char plain_text[plain_len];    // FIXME: MAX_ENCR_LENGTH ?
 
     EVP_BytesToKey(cipher, EVP_sha256(), NULL, (unsigned char *) pass, strlen(pass), 1, key, iv); // derives a key and IV from various parameters
 
     EVP_CIPHER_CTX_init(ctx);
-    EVP_DecryptInit_ex(ctx, cipher, NULL, key, iv);
 
-    if(!EVP_DecryptUpdate(ctx, plain_text, &plain_len, in, in_len))
-        return -1;
-    // TODO: chequear de aca para abajo
-    if(!EVP_DecryptFinal_ex(ctx, plain_text + plain_len, &final_len))
+    /* EVP_DecryptInit_ex, EVP_DecryptUpdate, EVP_DecryptFinal_ex 
+    return 1 for success and 0 for failure */
+
+    if(!EVP_DecryptInit_ex(ctx, cipher, NULL, key, iv))
         return -1;
 
-    *out_len += final_len;  // FIXME: why +=?
+    if(!EVP_DecryptUpdate(ctx, plain_text, (int *) out_len, in, in_len))
+        return -1;
+
+    if(!EVP_DecryptFinal_ex(ctx, plain_text + *out_len, &final_len))
+        return -1;
+
+    *out_len += final_len;
 
     memcpy(out, plain_text, *out_len);
 
-    EVP_CIPHER_CTX_cleanup(ctx); // FIXME: cleanup y free?
     EVP_CIPHER_CTX_free(ctx);
 
     return 0;
