@@ -14,15 +14,15 @@ usage(const char *progname) {
     fprintf(stderr,
             "Uso: %s [OPTION]...\n"
             "\n"
-            "   -h                  Imprime la ayuda y termina.\n"
-            "   -[extract | embed]  Indica si se va a extraer u ocultar información.\n"
-            "   -in <file>          Archivo que se va a ocultar.\n"
-            "   -p <bitmap file>    Archivo bmp que será el portador.\n"
-            "   -out <bitmap file>  Archivo bmp de salida, es decir, el archivo bitmapfile con la información de file incrustada.\n"
-            "   -steg <LSB1 | LSB4 | LSBI>              Algoritmo de esteganografiado: LSB de 1bit, LSB de 4 bits, LSB Enhanced."
+            "   -h                      Imprime la ayuda y termina.\n"
+            "   --[extract | embed]     Indica si se va a extraer u ocultar información.\n"
+            "   --in <file>             Archivo que se va a ocultar.\n"
+            "   -p <bitmap file>        Archivo bmp que será el portador.\n"
+            "   --out <bitmap file>     Archivo bmp de salida, es decir, el archivo bitmapfile con la información de file incrustada.\n"
+            "   --steg <LSB1 | LSB4 | LSBI>             Algoritmo de esteganografiado: LSB de 1bit, LSB de 4 bits, LSB Enhanced.\n"
             "   -a <aes128 | aes192 | aes256 | des>     Algoritmo de encripción.\n"
             "   -m <ecb | cfb | ofb | cbc>              Modo de encripción.\n"
-            "   -pass password                          Password de encripción.\n"
+            "   --pass password                         Password de encripción.\n"
             "\n",
             progname);
     exit(1);
@@ -36,7 +36,7 @@ parse_args(const int argc, char **argv) {
 
     int c;
 
-    while (true) {
+    while (1) {
         int option_index = 0;
         static struct option long_options[] = {
                 { "embed",      no_argument,       0, 0xD001 },
@@ -48,7 +48,7 @@ parse_args(const int argc, char **argv) {
                 { 0,            0,                 0, 0      }
         };
 
-        c = getopt_long(argc, argv, "p:a:m:", long_options, &option_index);
+        c = getopt_long(argc, argv, "hp:a:m:", long_options, &option_index);
 
         if (c == -1)
             break;
@@ -74,6 +74,10 @@ parse_args(const int argc, char **argv) {
                 a->embed_or_extract = 1;
                 break;
             case 0xD002:    // extract
+                if(a->embed_or_extract != 0) {
+                    fprintf(stderr, "Utilizar flag -embed o -extract, pero no ambos.\n");
+                    exit(1);
+                }
                 a->embed_or_extract = 2;
                 break;
             case 0xD003:    // in

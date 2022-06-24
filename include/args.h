@@ -1,5 +1,5 @@
-#ifndef STENOGRAPHY_CRYPTOGRAPHY_ARGS_H
-#define STENOGRAPHY_CRYPTOGRAPHY_ARGS_H
+#ifndef ARGS_H
+#define ARGS_H
 
 #define MAX_FILENAME_LENGTH 64
 #define MAX_LENGTH 32
@@ -29,4 +29,4 @@ parse_args(const int argc, char **argv);
  * */
 struct args *get_args();
 
-#endif //STENOGRAPHY_CRYPTOGRAPHY_ARGS_H
+#endif //ARGS_H
