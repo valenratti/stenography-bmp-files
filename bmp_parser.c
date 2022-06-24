@@ -1,4 +1,4 @@
-#include "bmp_utils.h"
+#include "include/bmp_utils.h"
 #include <stdint.h>
 #include <math.h>
 #include <stdlib.h>
@@ -9,20 +9,27 @@
  * Given a file, reads it and returns a pointer
  * in memory to the beggining of the file
  * @param path 
- * @param fileSize 
+ * @param file_size
  * @return uint8_t* 
  */
-uint8_t *readFile(char *path, long *fileSize) {
-    FILE *bmpImage = fopen(path, "rb");
-    fseek(bmpImage, 0, SEEK_END);
-    *fileSize = ftell(bmpImage);
-    rewind(bmpImage);
-    uint8_t *fileData = malloc(sizeof(uint8_t) * (*fileSize));
-    size_t readBytes = fread(fileData, sizeof(uint8_t), *fileSize, bmpImage);
-    fclose(bmpImage);
-    if (readBytes != *fileSize) {
-        free(fileData);
+uint8_t *read_file(char *path, long *file_size) {
+    FILE *bmp_image = fopen(path, "rb");
+
+    fseek(bmp_image, 0, SEEK_END);
+
+    *file_size = ftell(bmp_image);
+
+    rewind(bmp_image);
+
+    uint8_t *file_data = malloc(sizeof(uint8_t) * (*file_size));
+    size_t read_bytes = fread(file_data, sizeof(uint8_t), *file_size, bmp_image);
+
+    fclose(bmp_image);
+
+    if (read_bytes != *file_size) {
+        free(file_data);
         return NULL;
     }
-    return fileData;
+
+    return file_data;
 }
