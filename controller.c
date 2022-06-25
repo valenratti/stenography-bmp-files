@@ -13,6 +13,16 @@ void embed_using_args(struct args args){
         payload->concat = encrypted_bytes;
         payload->total_size = encrypted_size + sizeof(uint32_t);
         embed(bmp_file, payload, args.steg_algorithm);
+        uint8_t* result = malloc(bmp_file->header->file_size);
+        memcpy(result, bmp_file->header, (size_t) sizeof(struct bmp_header));
+        memcpy(result + sizeof(struct bmp_header), bmp_file->pixels, bmp_file->header->image_size);
+        FILE *file = fopen(args.out_file, "w");
+        if (file == NULL) {
+            printf("Error when creating new file");
+            return;
+        }
+        size_t write_result = fwrite(result, 1, bmp_file->header->file_size, file);
+        fclose(file);
     }else{
         payload_p plain_payload = generate_payload_from_file(args.in_file);
         embed(bmp_file, plain_payload, args.steg_algorithm);

@@ -89,8 +89,30 @@ payload_p extract(bmp_file_p src, struct args *arguments){
             k++;
         }
         return payload;
+    }else{
+        //Encrypted
+        uint32_t embedded_size = extract_size(&src->pixels, steg_utils);
+        payload_p payload = malloc(sizeof(struct payload));
+        payload->file_size = embedded_size;
+        payload->data = malloc(sizeof(uint8_t) * payload->file_size + 5);
+        //Extract embedded data byte by byte into payload->data
+        for(int i=0; i<payload->file_size; i++){
+            payload->data[i] = extract_byte_from_byte_array(&src->pixels, steg_utils);
+        }
+        uint8_t* decrypted_result = malloc(payload->file_size * sizeof(uint8_t) * 2);
+        unsigned int decrypted_length = 0;
+        decrypt(arguments->cipher_algorithm, arguments->mode, arguments->password, payload->data, payload->file_size, decrypted_result, &decrypted_length);
+        uint32_t plain_file_length = (decrypted_result[0] << 24) ^ (decrypted_result[1] << 16) ^ (decrypted_result[2] << 8) ^ decrypted_result[3];
+        decrypted_result+= sizeof(uint32_t);
+        free(payload->data);
+        payload->data = calloc(sizeof(uint8_t) * plain_file_length, sizeof (uint8_t));
+        for(int i=0; i<plain_file_length; i++){
+            payload->data[i] = decrypted_result[i];
+        }
+        payload->extension = calloc(10, sizeof(uint8_t));
+        strcpy(payload->extension, (char*) decrypted_result+plain_file_length);
+        return payload;
     }
-    return NULL;
 }
 
 void embed(bmp_file_p src, payload_p payload, char* mode){

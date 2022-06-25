@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "bmp_parser.h"
 #include "payload.h"
+#include "cipher.h"
 #include <string.h>
 #include <stdlib.h>
 #include "args.h"
