@@ -23,9 +23,9 @@ bmp_file_p parse_bmp_file(char *path) {
     //Allocate enough memory for all the bmp data.
     size_t file_length_in_bytes = bmp_file->header->image_size;
     bmp_file->pixels = (uint8_t*) malloc(file_length_in_bytes);
-    //Read pixels into pixels pointer, file pointer should be reading to beginning of data
-    size_t pixels_read = fread(bmp_file->pixels, file_length_in_bytes, 1, file);
-    if(pixels_read != 1){
+    //Read pixels into pixels pointer, file pointer should be reading to beginning of data by this point
+    size_t pixels_read = fread(bmp_file->pixels, 1, file_length_in_bytes, file);
+    if(pixels_read != file_length_in_bytes){
         printf("An error ocurred when attempting to parse pixels.");
         exit(1);
     }

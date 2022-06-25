@@ -9,12 +9,13 @@
 int main(int argc , char *argv[]) {
     parse_args(argc, argv);
     struct args *args = get_args();
-    struct args aux_args = {1, "./assets/valen.heic", "./assets/titanic1.bmp", "test.bmp", "LSB4", "nothing", "nothing", "" };
+    struct args aux_args = {1, "./assets/valen.txt", "./assets/kings.bmp", "test.bmp", "LSB1", "nothing", "nothing", "" };
+    struct args aux_args2 = {0, "./assets/valen.heic", "test.bmp", "salida", "LSB1", "nothing", "nothing", "" };
 
     if(aux_args.embed_or_extract == 1){
         embed_using_args(aux_args);
     }else{
-//        extract_using_args(*args);
+        extract_using_args(aux_args2);
     }
     return 0;
 }

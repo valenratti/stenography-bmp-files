@@ -21,7 +21,7 @@ char* get_file_extension(char *path){
     }
     while (path[i] != '.') i++;
     int size = strlen(path) - i;
-    file_extension = malloc(size * sizeof (uint8_t) + 1);
+    file_extension = calloc(10, sizeof(char));
     strcpy(file_extension, path+i);
     return file_extension;
 }
@@ -37,18 +37,16 @@ payload_p generate_payload_from_file(char* path){
     plain_payload->extension = file_extension;
     plain_payload->file_size = file_size;
     plain_payload->data = malloc(file_size+1);
-    fread(plain_payload->data, file_size + 1, 1, file);
-    plain_payload->concat = malloc(sizeof(uint32_t) + plain_payload->file_size + strlen(plain_payload->extension) + 1);
+    size_t read_bytes = fread(plain_payload->data, 1, file_size, file);
+    plain_payload->total_size = file_size + sizeof(uint32_t) + strlen(plain_payload->extension) + 1;
+    plain_payload->concat = calloc(plain_payload->total_size, sizeof(uint8_t));
+    uint8_t size_in_big_endian[4] = {plain_payload->file_size >> 24, plain_payload->file_size >> 16, plain_payload->file_size >> 8, plain_payload->file_size};
+//    memcpy(plain_payload->concat, size_in_big_endian, 4);
     plain_payload->concat[0] = plain_payload->file_size >> 24;
     plain_payload->concat[1] = plain_payload->file_size >> 16;
     plain_payload->concat[2] = plain_payload->file_size >> 8;
     plain_payload->concat[3] = plain_payload->file_size;
-    memcpy(plain_payload + sizeof(uint32_t), plain_payload->data, plain_payload->file_size);
-    memcpy(plain_payload + sizeof(uint32_t) + plain_payload->file_size, plain_payload->extension, strlen(plain_payload->extension) + 1);
-    plain_payload->total_size = file_size + sizeof(uint32_t) + strlen(plain_payload->extension) + 1;
+    memcpy(plain_payload->concat + sizeof(uint32_t), plain_payload->data, sizeof plain_payload->file_size);
+    memcpy(plain_payload->concat + sizeof(uint32_t) + plain_payload->file_size, plain_payload->extension, strlen(plain_payload->extension) + 1);
     return plain_payload;
 }
-
-//encrypted_payload_p generate_encrypted_payload_from_payload(payload_p payload){
-//
-//}

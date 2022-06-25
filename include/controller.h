@@ -9,6 +9,6 @@
 #include <stdlib.h>
 
 void embed_using_args(struct args args);
-//void extract_using_args(struct args args);
+void extract_using_args(struct args args);
 
 #endif
