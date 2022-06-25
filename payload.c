@@ -46,7 +46,7 @@ payload_p generate_payload_from_file(char* path){
     plain_payload->concat[1] = plain_payload->file_size >> 16;
     plain_payload->concat[2] = plain_payload->file_size >> 8;
     plain_payload->concat[3] = plain_payload->file_size;
-    memcpy(plain_payload->concat + sizeof(uint32_t), plain_payload->data, sizeof plain_payload->file_size);
+    memcpy(plain_payload->concat + sizeof(uint32_t), plain_payload->data, sizeof(uint8_t ) * plain_payload->file_size);
     memcpy(plain_payload->concat + sizeof(uint32_t) + plain_payload->file_size, plain_payload->extension, strlen(plain_payload->extension) + 1);
     return plain_payload;
 }
