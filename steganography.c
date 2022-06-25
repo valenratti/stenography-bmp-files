@@ -44,7 +44,7 @@ steg_utils* get_params_for_mode(enum steganography_mode mode ){
 
 void embed(bmp_file_p src, payload_p payload, char *dest, char* mode){
     enum steganography_mode mode_enum = get_mode_from_string(mode);
-    validate_file_fits(src->header->image_size, payload->file_size, mode_enum);
+    validate_file_fits(src->header->image_size, payload->total_size, mode_enum);
     steg_utils* steg_utils = get_params_for_mode(mode_enum);
 
     uint8_t payload_byte_iterator = payload->data[0];
