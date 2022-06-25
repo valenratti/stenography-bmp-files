@@ -11,7 +11,7 @@ int main(int argc , char *argv[]) {
     struct args *args = get_args();
 //    struct args aux_args = {1, "./assets/ss-tp5.pdf", "./assets/kings.bmp", "ss_oculto.bmp", "LSB4", "aes256", "OFB", "pass" };
 //    struct args aux_args2 = {0, "./assets/valen.heic", "ss_oculto.bmp", "saliobienss", "LSB4", "des", "OFB", "pass" };
-
+    strcpy(args->steg_algorithm, "LSB4");
     if(args->embed_or_extract == 1){
         embed_using_args(*args);
     }else{
