@@ -6,7 +6,7 @@
 #define MAX_PASS_LENGTH 512
 
 struct args {
-    char embed_or_extract;  /* 1 if embed, 2 if extract */
+    int embed_or_extract;  /* 1 if embed, 2 if extract */
     char in_file[MAX_FILENAME_LENGTH];
     char bitmap_file[MAX_FILENAME_LENGTH];
     char out_file[MAX_FILENAME_LENGTH];

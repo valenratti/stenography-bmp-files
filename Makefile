@@ -1,6 +1,7 @@
 .PHONY=clean all
 INCLUDES=-I /include
-CFLAGS=--std=c11 -pedantic -pedantic-errors -Wall -Wextra -Werror -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-sign-compare -Wno-enum-compare -g
+CC=gcc
+CFLAGS=--std=c11 -pedantic -pedantic-errors -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-sign-compare -Wno-enum-compare -g
 
 TARGET=stegano
 OBJECTS=$(wildcard *.c)
@@ -12,4 +13,4 @@ clean:
 	rm -f /*.o $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -lssl -lcrypto -o stegano
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -lssl -lcrypto -o stegano -L/opt/homebrew/opt/openssl@3/lib -I/opt/homebrew/opt/openssl@3/include
