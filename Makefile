@@ -1,7 +1,7 @@
 .PHONY=clean all
 INCLUDES=-I /include
 CC=gcc
-CFLAGS=--std=c11 -pedantic -pedantic-errors -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-sign-compare -Wno-enum-compare -g
+CFLAGS=--std=c11 -pedantic -pedantic-errors -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-sign-compare -Wno-enum-compare -g
 
 TARGET=stegano
 OBJECTS=$(wildcard *.c)

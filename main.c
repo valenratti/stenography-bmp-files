@@ -7,15 +7,20 @@
 #include <string.h>
 
 int main(int argc , char *argv[]) {
-    parse_args(argc, argv);
-    struct args *args = get_args();
+    // if(argc < 5) {
+    //     fprintf(stderr, "Cantidad inválida de argumentos. Imprima la ayuda con -h.\n");
+    //     exit(1);
+    // }
+
+    // parse_args(argc, argv);
+    // struct args *args = get_args();
 //    struct args aux_args = {1, "./assets/ss-tp5.pdf", "./assets/kings.bmp", "ss_oculto.bmp", "LSB4", "aes256", "OFB", "pass" };
-//    struct args aux_args2 = {0, "./assets/valen.heic", "ss_oculto.bmp", "saliobienss", "LSB4", "des", "OFB", "pass" };
-    strcpy(args->steg_algorithm, "LSB4");
-    if(args->embed_or_extract == 1){
-        embed_using_args(*args);
+   struct args aux_args2 = {0, "", "ss_oculto.bmp", "outt", "LSB4", "", "", "" };
+    // strcpy(args->steg_algorithm, "LSBI");
+    if(aux_args2.embed_or_extract == 1){
+        embed_using_args(aux_args2);
     }else{
-        extract_using_args(*args);
+        extract_using_args(aux_args2);
     }
     return 0;
 }
