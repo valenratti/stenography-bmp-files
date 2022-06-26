@@ -7,15 +7,21 @@
 #include <string.h>
 
 int main(int argc , char *argv[]) {
-    parse_args(argc, argv);
-    struct args *args = get_args();
-//    struct args aux_args = {1, "./assets/ss-tp5.pdf", "./assets/kings.bmp", "ss_oculto.bmp", "LSB4", "aes256", "OFB", "pass" };
-//    struct args aux_args2 = {0, "./assets/valen.heic", "ss_oculto.bmp", "saliobienss", "LSB4", "des", "OFB", "pass" };
-    strcpy(args->steg_algorithm, "LSB4");
-    if(args->embed_or_extract == 1){
-        embed_using_args(*args);
+    // if(argc < 5) {
+    //     fprintf(stderr, "Cantidad inválida de argumentos. Imprima la ayuda con -h.\n");
+    //     exit(1);
+    // }
+
+    // parse_args(argc, argv);
+    // struct args *args = get_args();
+    struct args aux_args = {1, "./assets/valen.txt", "./assets/sample.bmp", "ss_oculto_dom.bmp", "LSBI", "aes256", "OFB", "pass" };
+   struct args aux_args2 = {0, "", "ss_oculto.bmp", "outtttt", "LSB4", "", "", "" };
+   struct args decrypt_ss = {0, "", "ss_oculto_dom.bmp", "domingo", "LSBI", "aes256", "OFB", "pass"};
+   // strcpy(args->steg_algorithm, "LSBI");
+    if(decrypt_ss.embed_or_extract == 1){
+        embed_using_args(aux_args);
     }else{
-        extract_using_args(*args);
+        extract_using_args(decrypt_ss);
     }
     return 0;
 }

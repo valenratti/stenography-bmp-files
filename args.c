@@ -28,8 +28,14 @@ usage(const char *progname) {
     exit(1);
 }
 
+int element_in_array(char **arr, int len, char *target);
+
 void
 parse_args(const int argc, char **argv) {
+    char *cipher_algo[4] = {"des", "aes256", "aes192", "aes128"};
+    char *cipher_mode[4] = {"ecb", "cfb", "ofb", "cbc"};
+    char *steg_method[3] = {"LSB1", "LSB4", "LSBI"};
+
     struct args *a = get_args();
 
     memset(a, 0, sizeof(*a));
@@ -61,9 +67,17 @@ parse_args(const int argc, char **argv) {
                 strcpy(a->bitmap_file, optarg);
                 break;
             case 'a':
+                if(!element_in_array(cipher_algo, 4, optarg)) {
+                    fprintf(stderr, "Algoritmo de cifrado inválido. Imprima la ayuda con -h.\n");
+                    exit(1);
+                }
                 strcpy(a->cipher_algorithm, optarg);
                 break;
             case 'm':
+                if(!element_in_array(cipher_mode, 4, optarg)) {
+                    fprintf(stderr, "Modo de cifrado inválido. Imprima la ayuda con -h.\n");
+                    exit(1);
+                }
                 strcpy(a->mode, optarg);
                 break;
             case 0xD001:    // embed
@@ -87,13 +101,17 @@ parse_args(const int argc, char **argv) {
                 strcpy(a->out_file, optarg);
                 break;
             case 0xD005:    // steg
+                if(!element_in_array(steg_method, 3, optarg)) {
+                    printf("Algoritmo de esteganografía inválido. Imprima la ayuda con -h.\n");
+                    exit(1);
+                }
                 strcpy(a->steg_algorithm, optarg);
                 break;
             case 0xD006:    // pass
                 strcpy(a->password, optarg);
                 break;
             default:
-                fprintf(stderr, "Argumento desconocido %d.\n", c);
+                fprintf(stderr, "Argumento desconocido. Imprima la ayuda con -h.\n");
                 exit(1);
         }
 
@@ -114,4 +132,12 @@ parse_args(const int argc, char **argv) {
 
 struct args *get_args(){
     return &args;
+}
+
+int element_in_array(char **arr, int len, char *target) {
+    for(int i = 0; i < len; i++) {
+        if(strncmp(arr[i], target, strlen(target)) == 0)
+            return 1;
+    }
+    return 0;
 }
