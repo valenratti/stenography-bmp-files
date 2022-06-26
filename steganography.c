@@ -115,6 +115,7 @@ payload_p extract(bmp_file_p src, struct args *arguments){
             payload->data[i] = decrypted_result[i];
         }
         payload->extension = calloc(10, sizeof(uint8_t));
+        payload->file_size = plain_file_length;
         strcpy(payload->extension, (char*) decrypted_result+plain_file_length);
         return payload;
     }
@@ -218,9 +219,7 @@ payload_p extract_lsbi(bmp_file_p src, steg_utils* steg_utils, struct args *argu
     src->pixels += sizeof(uint32_t) * 8;
     payload_p payload = malloc(sizeof(struct payload));
     payload->file_size = embedded_size;
-    payload->data = malloc(sizeof(uint8_t) * payload->file_size + 5);
-
-
+    payload->data = calloc(sizeof(uint8_t) * payload->file_size + 5, sizeof(uint8_t));
     // i = 0 porque ya se saltearon los bytes del patron y los bytes del tamaño del archivo
     for(int i = 0; i < payload->file_size; i++) {
         byte = 0;
@@ -276,6 +275,7 @@ payload_p extract_lsbi(bmp_file_p src, steg_utils* steg_utils, struct args *argu
             payload->data[i] = decrypted_result[i];
         }
         payload->extension = calloc(10, sizeof(uint8_t));
+        payload->file_size = plain_file_length;
         strcpy(payload->extension, (char*) decrypted_result+plain_file_length);
     }
 

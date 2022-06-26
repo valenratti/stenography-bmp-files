@@ -49,7 +49,7 @@ parse_args(const int argc, char **argv) {
                 { "extract",    no_argument,       0, 0xD002 },
                 { "in",         required_argument, 0, 0xD003 },
                 { "out",        required_argument, 0, 0xD004 },
-                { "steg",       no_argument,       0, 0xD005 },
+                { "steg",       required_argument,       0, 0xD005 },
                 { "pass",       required_argument, 0, 0xD006 },
                 { 0,            0,                 0, 0      }
         };
