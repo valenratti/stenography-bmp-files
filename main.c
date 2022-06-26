@@ -14,13 +14,14 @@ int main(int argc , char *argv[]) {
 
     // parse_args(argc, argv);
     // struct args *args = get_args();
-//    struct args aux_args = {1, "./assets/ss-tp5.pdf", "./assets/kings.bmp", "ss_oculto.bmp", "LSB4", "aes256", "OFB", "pass" };
-   struct args aux_args2 = {0, "", "ss_oculto.bmp", "outt", "LSB4", "", "", "" };
-    // strcpy(args->steg_algorithm, "LSBI");
-    if(aux_args2.embed_or_extract == 1){
-        embed_using_args(aux_args2);
+    struct args aux_args = {1, "./assets/valen.txt", "./assets/sample.bmp", "ss_oculto_dom.bmp", "LSBI", "aes256", "OFB", "pass" };
+   struct args aux_args2 = {0, "", "ss_oculto.bmp", "outtttt", "LSB4", "", "", "" };
+   struct args decrypt_ss = {0, "", "ss_oculto_dom.bmp", "domingo", "LSBI", "aes256", "OFB", "pass"};
+   // strcpy(args->steg_algorithm, "LSBI");
+    if(decrypt_ss.embed_or_extract == 1){
+        embed_using_args(aux_args);
     }else{
-        extract_using_args(aux_args2);
+        extract_using_args(decrypt_ss);
     }
     return 0;
 }
